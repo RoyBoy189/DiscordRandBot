@@ -16,7 +16,7 @@ list = ["Greeks", "fanasty", "cyberpunk", "monsters", "Love", "sea", "space", "C
         " musical instrument", "something you can't live without"]
 bot = commands.Bot(command_prefix = prefix)
 n = list.length
-token = "MTAzNzc2MjIwNzY2MTk2MTI0Nw.GG9I7Z.ws43ABTulNv7Kc0LX7vEdSMU8GL43ybOijLPm4"
+
 rand = random.randint(1, n)
 
 
@@ -55,4 +55,3 @@ async def on_message(message):
                 n = list.length
 
 
-bot.run(token)
