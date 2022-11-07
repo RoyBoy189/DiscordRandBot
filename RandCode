@@ -1,23 +1,26 @@
-# This is a sample Python script.
+ This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 
 import random
+import secrets
+
 import discord
 import asyncio
 from discord.ext import commands
 
-prefix = "?"
+idealist = ["Greeks", "fanasty", "cyberpunk", "monsters", "Love", "sea", "space", "Colonial", "pirates",
+            "superheros",
+            "animals", "robots", "memes", "mythical creatures or persons", "islands", "store", "plants",
+            " musical instrument", "something you can't live without"]
+intents = discord.Intents.all()  # or .all() if you ticked all, that is easier
 
-list = ["Greeks", "fanasty", "cyberpunk", "monsters", "Love", "sea", "space", "Colonial", "pirates", "superheros",
-        "animals", "robots", "memes", "mythical creatures or persons", "islands", "store", "plants",
-        " musical instrument", "something you can't live without"]
-bot = commands.Bot(command_prefix = prefix)
-n = list.length
-
-rand = random.randint(1, n)
+bot = commands.Bot(command_prefix="!", intents=intents)
+# client = discord.Client()
+n = 19
+token = 'Put your token here'
 
 
 @bot.event
@@ -26,32 +29,37 @@ async def on_ready():
 
 
 @bot.command(pass_context=True)
-async def RandomIdea(ctx):
-    embed = discord.Embed(title="RandomIdea", description=(list[rand]), color=(0xF85252))
+async def randomidea(ctx):
+    embed = discord.Embed(title="RandomIdea", description=(random.choice(idealist)), color=(0xF85252))
     await ctx.send(embed=embed)
 
 
-async def on_message(message):
-    message.content = message.content.lower()
-    if message.content.startswith("#add"):
-        await bot.send_message(message.channel, "what is your idea?")
-        msg = await bot.wait_for_message(timeout=10, author=message.author)
-        if msg:
-            list.append(message.content)
-            await bot.send_message(message.channel, "added to list")
-            n = list.length
+@bot.command(pass_context=True)
+async def addtolist(ctx, item):
+    idealist.append(item)
+    ctx.send(f'item added to list successfully\nList is now: {idealist}')
 
-    if message.content.startswith("#idealist"):
-        values = ",".join(map(str, list))
-        await bot.send_message(message.channel, values)
 
-    if message.content.startswith("#remove"):
-        await bot.send_message(message.channel, "What message should I remove")
-        msg = await bot.wait_for_message(timeout=10, author=message.author)
-        for x in list:
-            if msg and list[x] == message.content:
-                list.remove(message.content)
-                await bot.send_message(message.channel, "removed from list")
-                n = list.length
+async def remove(ctx, item):
+    for x in idealist:
+        if idealist[x] == item:
+            list.remove(item)
+            ctx.send(f'item added to list successfully\nList is now: {idealist}')
+    else:
+        embed = discord.Embed(title="error", description="Can't find the idea you are looking for", color=(0xF85252))
+        ctx.send(embed)
+
+
+@bot.command(help='Shows bot list')
+async def showlist(ctx):
+    embed = discord.Embed(title="ListofIdeas", description=', '.join(idealist), color=(0xF85252))
+    await ctx.send(embed=embed)
+
+@bot.command(help='Shows bot list')
+async def shutdown(ctx):
+    exit()
+
+
+bot.run(token)
 
 
