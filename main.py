@@ -1,4 +1,4 @@
- This is a sample Python script.
+ # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -8,8 +8,9 @@ import random
 import secrets
 
 import discord
-import asyncio
 from discord.ext import commands
+from discord.ext.commands import has_permissions,MissingPermissions
+
 
 idealist = ["Greeks", "fanasty", "cyberpunk", "monsters", "Love", "sea", "space", "Colonial", "pirates",
             "superheros",
@@ -20,7 +21,7 @@ intents = discord.Intents.all()  # or .all() if you ticked all, that is easier
 bot = commands.Bot(command_prefix="!", intents=intents)
 # client = discord.Client()
 n = 19
-token = 'Put your token here'
+token = 'MTAzNzc2MjIwNzY2MTk2MTI0Nw.G1CDWc.yXgfeQX_js5IT6SbxeplLfli0EXEHZXUegupt4'
 
 
 @bot.event
@@ -35,16 +36,21 @@ async def randomidea(ctx):
 
 
 @bot.command(pass_context=True)
+@has_permissions(ban_members=True, )
 async def addtolist(ctx, item):
     idealist.append(item)
     ctx.send(f'item added to list successfully\nList is now: {idealist}')
+    embed = discord.Embed(title="add", description=(item + " has been removed"), color=(0xF85252))
+    await ctx.send(embed=embed)
 
-
-async def remove(ctx, item):
+@bot.command(pass_context=True)
+@has_permissions(ban_members=True)
+async def remove(ctx,  item):
     for x in idealist:
-        if idealist[x] == item:
-            list.remove(item)
-            ctx.send(f'item added to list successfully\nList is now: {idealist}')
+        if x == item:
+            idealist.remove(item)
+            embed = discord.Embed(title="Remove", description=(x + " has been added"), color=(0xF85252))
+            await ctx.send(embed=embed)
     else:
         embed = discord.Embed(title="error", description="Can't find the idea you are looking for", color=(0xF85252))
         ctx.send(embed)
