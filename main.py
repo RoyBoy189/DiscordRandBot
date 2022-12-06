@@ -21,7 +21,7 @@ intents = discord.Intents.all()  # or .all() if you ticked all, that is easier
 bot = commands.Bot(command_prefix="!", intents=intents)
 # client = discord.Client()
 n = 19
-token = 'MTAzNzc2MjIwNzY2MTk2MTI0Nw.G1CDWc.yXgfeQX_js5IT6SbxeplLfli0EXEHZXUegupt4'
+token = 'put token here'
 
 
 @bot.event
